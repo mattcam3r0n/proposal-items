@@ -1,0 +1,35 @@
+@model proposal_items.ViewModels.AddProposalItem
+@{
+    ViewData["Title"] = "Add Proposal Item";
+}
+
+<h2>Add Proposal Item</h2>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddProposalItem" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <img src="~/images/@Model.Image.Filename" width=200 height=200/>
+            </div>
+            <div class="form-group">
+                <input type="hidden" asp-for="ImageId" />
+                <input type="hidden" asp-for="ProposalId" />
+                <label asp-for="Caption" class="control-label"></label>
+                <input asp-for="Caption" class="form-control" />
+                <span asp-validation-for="Caption" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

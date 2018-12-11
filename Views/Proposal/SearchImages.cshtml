@@ -1,0 +1,71 @@
+@model proposal_items.ViewModels.ImageSearch
+
+@{
+    ViewData["Title"] = "ImageSearch";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+
+    <h4>Add Proposal Items</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <!-- NOTE the method="get" on the form action, forcing the form
+            to use HTTP GET instead of POST, and pass the searchString and proposalId
+            as route parameters -->
+            <form asp-controller="Proposal" asp-action="SearchImages" method="get">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label @*asp-for="Search" *@ class="control-label">Search</label>
+                    <input type="text" name="SearchString" />
+                    <!-- NOTE the hidden field that hangs on to the proposalId because we'll need it in next step -->
+                    <input type="hidden" name="ProposalId" />
+                    <input type="submit" value="Search" class="form-control" />
+                </div>
+            </form>
+        </div>
+        <!-- Search Results -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Filename
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Images)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Filename)
+                    </td>
+                    <td>
+                        <img height="120" width="160" src="~/images/@item.Filename"/>
+                    </td>
+                    <td>
+                        <a asp-action="AddProposalItem" asp-route-imageId="@item.Id" asp-route-proposalId="@Model.ProposalId">Add to Proposal</a> |
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+</body>
+</html>

@@ -1,0 +1,81 @@
+@model proposal_items.Models.Proposal
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit Proposal</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" readonly class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <p>
+                    <!-- NOTE: we send the proposalId along to the search page so we know
+                    which proposal we're adding items to -->
+                    @Html.ActionLink("Add Item", "SearchImages", new { proposalId = Model.Id })
+                </p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                Caption
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ProposalItems)
+                        {
+                            <tr>
+                                <td>
+                                    <img src="~/images/@item.Image.Filename" width=200 height=200 />
+                                    @Html.DisplayFor(modelItem => item.Image.Filename)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Caption)
+                                </td>
+                                <td>
+                                    <!-- NOTE these don't work properly yet -->
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
